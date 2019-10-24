@@ -4,3 +4,16 @@ services:
     image: 'postgres:latest'
   redis:
     image: 'redis:latest'
+  server:
+    build:
+      dockerfile: Dockerfile.dev
+      #here define path of dockerfile
+      context: ./server
+    volumes:
+      # inside docker image dont try to mount , modify this folder, leave it as it is!
+      - /app/node_modules
+      # host machine ./server will be mounted to /app at docker container (except node_modules)
+      - ./server:/app
+    environment:
+      # just just use service's name
+      - REDIS_HOST=redis
